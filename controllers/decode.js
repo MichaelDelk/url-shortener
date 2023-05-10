@@ -1,7 +1,15 @@
+const urlRepository = require('../database/urls');
+
 const decodeUrl = (req, res) => {
+
+    const token = req.body.token;
+
+    const urlRequested = urlRepository.getUrlForToken(token);
+
     const responseJSON = {
         'success' : true,
-        'message' : 'We want to decode this: ' + req.body.token
+        'message' : '',
+        'urlRequested' : urlRequested
     }
     return res.status(200).json(responseJSON);
 };

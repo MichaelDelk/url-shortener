@@ -52,9 +52,10 @@ class UrlRepository {
          * Fetch all existing rows.
          */
         const rows = await this.getAll();
-        
+
         const row = rows.find(o => o.token === token); 
-        console.log(row);
+
+        return row.urlRequested;
     }
 
     /**
