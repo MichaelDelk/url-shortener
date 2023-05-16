@@ -5,7 +5,9 @@
  * TODO - helmet for security
  * TODO - Split ./controllers/public.js into sep file per controller.
  * TODO - Lint!
- * TODO - .env file - create and document
+ * TODO - .env file - Document in readme.
+ * TODO - Better messaging/error-handling.
+ * TODO - Note: Not re-directing. Returning object for processing.
  */
 
 const express = require('express');

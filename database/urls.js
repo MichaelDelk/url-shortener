@@ -1,7 +1,8 @@
 const fs = require('fs');
 
 /**
- * Respository creates and maintains data in JSON store on local file system.
+ * Respository creates and maintains data in JSON store on local file 
+ * system.
  * @class
  */
 class UrlRepository {
@@ -14,7 +15,9 @@ class UrlRepository {
     constructor(filename) {
 
         if(!filename) {
-            throw new Error('Filename is required to create a datastore!');
+            throw new Error(
+                'Filename is required to create a datastore!'
+                );
         }
 
         this.filename = filename;
@@ -31,13 +34,15 @@ class UrlRepository {
 
     /**
      * Retrieve all rows from data store.
-     * @returns {object} JSON object containing array of JSON store data
+     * @returns {object} JSON obj containing array of JSON store data
      */
     async getAll() {
         return JSON.parse(
-            await fs.promises.readFile(__dirname + '/' + this.filename, { 
-                encoding : 'utf8' 
-            })
+            await fs.promises.readFile(
+                __dirname + '/' + this.filename, { 
+                    encoding : 'utf8' 
+                }
+            )
         );
     }
 
@@ -51,11 +56,28 @@ class UrlRepository {
         /**
          * Fetch all existing rows.
          */
-        const rows = await this.getAll();
+        const urls = await this.getAll();
 
-        const row = rows.find(o => o.token === token); 
+        const urlObject = urls.find(o => o.token === token); 
 
-        return row.urlRequested;
+        return urlObject.url;
+    }
+
+    /**
+     * Retrieve token for requested url.
+     * @param {string} Requested url
+     * @returns {string} Token for requested url
+     */
+    async getTokenForUrl(url) {
+
+        /**
+         * Fetch all existing rows.
+         */
+        const urls = await this.getAll();
+
+        const urlObject = urls.find(o => o.url === url); 
+
+        return urlObject;
     }
 
     /**
@@ -68,15 +90,15 @@ class UrlRepository {
         /**
          * Fetch all existing rows.
          */
-        const rows = await this.getAll();
+        const urls = await this.getAll();
         
         /**
          * Add new row to array and write entire array to disk.
          */
-        rows.push(attrs);
+        urls.push(attrs);
         await fs.promises.writeFile(
             __dirname + '/' + this.filename,
-            JSON.stringify(rows, null, 2)
+            JSON.stringify(urls, null, 2)
         );
 
         return attrs;

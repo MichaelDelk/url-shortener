@@ -1,6 +1,7 @@
 const shortid = require('shortid');
 const URL = require('url').URL;
 const urlRepository = require('../database/urls');
+const { url } = require('inspector');
 
 const encodeUrl = (req, res) => {
     const urlRequested = req.body.url;
@@ -8,7 +9,29 @@ const encodeUrl = (req, res) => {
     const token = shortid.generate();
     const reqCount = 0;
 
-    // TODO - Verify requested url is not already encoded.
+    /**
+     * Return "422 Unprocessable Entity" for bad input.
+     */
+    if (!urlRequested || !stringIsValidUrl(urlRequested)) {
+        const responseJSON = {
+            success: false,
+            urlRequested: urlRequested,
+            message: 'urlRequested must be a valid url.'
+        }
+        console.log(JSON.stringify(responseJSON));
+        return res.status(422).json(responseJSON);
+    }
+
+    /**
+     * Return token if requested url has been previously encoded.
+     */
+    const urlObject = urlRepository.getTokenForUrl(urlRequested).then(console.log('tst001'));
+    console.log('tst002');
+    if (urlObject) {
+        console.log(JSON.stringify(urlObject));
+        return res.status(200).json(urlObject);
+    }
+
 
     urlRepository.create({
         urlRequested,
@@ -16,18 +39,13 @@ const encodeUrl = (req, res) => {
         reqCount
     });
 
-    console.log(urlRepository.getUrlForToken('zfZhRyj4E'));
-
     const responseJSON = {
         'success' : true,
-        'message' : 'We want to encode this: ' + urlRequested,
-        'shortenedUrl' : 'to this: ' + token,
-        'isValidUrl' : isValidUrl
+        'url' : urlRequested,
+        'token' : token
     }
     return res.status(200).json(responseJSON);
 };
-
-module.exports = { encodeUrl };
 
 const stringIsValidUrl = (s) => {
     try {
@@ -37,3 +55,5 @@ const stringIsValidUrl = (s) => {
         return false;
     }
 };
+
+module.exports = { encodeUrl };
