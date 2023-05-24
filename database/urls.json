@@ -22,5 +22,20 @@
     "urlRequested": "http://placebeard.it/g/640x480",
     "token": "1kqu1hPKe",
     "reqCount": 0
+  },
+  {
+    "urlRequested": "https://picsum.photos/id/870/200/300?grayscale&blur=2",
+    "token": "VGC7xZKFf",
+    "reqCount": 0
+  },
+  {
+    "urlRequested": "https://picsum.photos/id/870/200/300?grayscale&blur=2",
+    "token": "VUmx8IFYh",
+    "reqCount": 0
+  },
+  {
+    "urlRequested": "https://picsum.photos/id/870/200/300?grayscale&blur=3",
+    "token": "xLLj9Lami",
+    "reqCount": 0
   }
 ]

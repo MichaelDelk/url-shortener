@@ -2,12 +2,19 @@
  * TODO - Fix logging.
  * TODO - Sanitize inputs.
  * TODO - Headers in all files
+ * TODO - Headers on all functions.
  * TODO - helmet for security
- * TODO - Split ./controllers/public.js into sep file per controller.
  * TODO - Lint!
  * TODO - .env file - Document in readme.
  * TODO - Better messaging/error-handling.
  * TODO - Note: Not re-directing. Returning object for processing.
+ * TODO - Use sync for sequential. No need to go async, then convert to sync.
+ * TODO - Use console.info and console.error.
+ * TODO - Implement requestCount.
+ * TODO - Standardize url vs urlRequested.
+ * TODO - Return entire object or just requested element?
+ * TODO - Installation, dev/prod usage in readme.
+ * TODO - Test difference in general error handling/reporting dev vs prod.
  */
 
 const express = require('express');
@@ -47,7 +54,7 @@ app.use('/', (req, res) => {
 app.use((error, req, res) => {
     if (error) {
         // TODO - Notify IT Dept.
-        res.status(error.status || 500).json({
+        res.status(error.status || 500).send({
             success: false,
             message: error.message,
         });

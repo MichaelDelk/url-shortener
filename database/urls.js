@@ -36,9 +36,9 @@ class UrlRepository {
      * Retrieve all rows from data store.
      * @returns {object} JSON obj containing array of JSON store data
      */
-    async getAll() {
+    getAll() {
         return JSON.parse(
-            await fs.promises.readFile(
+            fs.readFileSync(
                 __dirname + '/' + this.filename, { 
                     encoding : 'utf8' 
                 }
@@ -51,16 +51,16 @@ class UrlRepository {
      * @param {string} Token to be decoded
      * @returns {string} Decoded url for requested token
      */
-    async getUrlForToken(token) {
+    getUrlForToken(token) {
 
         /**
          * Fetch all existing rows.
          */
-        const urls = await this.getAll();
+        const urls = this.getAll();
 
         const urlObject = urls.find(o => o.token === token); 
 
-        return urlObject.url;
+        return urlObject.urlRequested;
     }
 
     /**
@@ -68,14 +68,15 @@ class UrlRepository {
      * @param {string} Requested url
      * @returns {string} Token for requested url
      */
-    async getTokenForUrl(url) {
+
+    getTokenForUrl(url) {
 
         /**
          * Fetch all existing rows.
          */
-        const urls = await this.getAll();
+        const urls = this.getAll();
 
-        const urlObject = urls.find(o => o.url === url); 
+        const urlObject = urls.find(o => o.urlRequested === url);
 
         return urlObject;
     }
@@ -85,18 +86,18 @@ class UrlRepository {
      * @param {object} attrs - JSON object of requested new row.
      * @returns {object} JSON object of requested new row
      */
-    async create(attrs) {
+    create(attrs) {
 
         /**
          * Fetch all existing rows.
          */
-        const urls = await this.getAll();
+        const urls = this.getAll();
         
         /**
          * Add new row to array and write entire array to disk.
          */
         urls.push(attrs);
-        await fs.promises.writeFile(
+        fs.writeFileSync(
             __dirname + '/' + this.filename,
             JSON.stringify(urls, null, 2)
         );
